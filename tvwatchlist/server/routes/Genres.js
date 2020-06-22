@@ -13,23 +13,23 @@ router.get('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({
             payload: null,
-            message: 'failed retrieving users',
+            message: 'failed retrieving genres',
         });
     }
 })
 
-router.post('/', async (req,res) => {
-    const {genre_name} = req.body
-    try{
+router.post('/', async (req, res) => {
+    const { genre_name } = req.body
+    try {
         const newGenre = await genresQueries.addNewGenre(genre_name)
         res.json({
             payload: newGenre,
-            message:"added genre"
+            message: "added genre"
         })
-    }catch (error) {
+    } catch (error) {
         res.status(500).json({
             payload: null,
-            message: 'failed retrieving users',
+            message: 'failed posting genre',
         });
     }
 })
