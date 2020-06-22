@@ -22,9 +22,12 @@ getShowByid = async (id) => {
 }
 
 //post show
-addNewShow = async () => {
+addNewShow = async (title, img_url, genre_id) => {
     try {
-    let insertQuery = db.none("INSERT into shows (title, img_url, genre_id) VALUES($1,$2, $3)")
+    const insertQuery =`INSERT into shows (title, img_url, genre_id) VALUES($1,$2,$3)`
+    let response = await db.none(insertQuery, [title, img_url, genre_id])
+    console.log("help", response)
+    return response
     } catch (error) {
         console.log("error", error)
     };
@@ -33,7 +36,8 @@ addNewShow = async () => {
 //get all shows for specific genre_id
 getShowsByGenreid = async (genre_id) => {
     try {
-        let response = db.any("SELECT * from shows WHERE genre_id = $1", [genre_id])
+        let response = await db.any("SELECT * from shows WHERE genre_id = $1", [genre_id])
+        // console.log("here", response)
         return response
     } catch (error) {
         console.log("error", error)
@@ -43,7 +47,8 @@ getShowsByGenreid = async (genre_id) => {
 //get all shows for specific user_id
 getShowsByUserid = async (user_id) => {
     try {
-        let response = db.any("SELECT * from shows WHERE user_id = $1", [user_id])
+        let response = await db.any("SELECT * FROM shows_users WHERE user_id = $1", [user_id])
+        // console.log(response)
         return response
     } catch (error) {
         console.log("error", error)
@@ -54,5 +59,6 @@ module.exports = {
     getAllshows,
     getShowByid,
     getShowsByGenreid,
-    getShowsByUserid
+    getShowsByUserid,
+    addNewShow
 }
