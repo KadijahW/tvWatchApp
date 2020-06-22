@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 })
 
 //get single user by id
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
     const id = req.params.id;
     try {
         let user = await userQueries.getUserByid(id)
@@ -38,19 +38,22 @@ router.get('/', async (req, res) => {
 
 //add new user
 router.post('/', async (req, res) => {
-    const {username, avatar_url} = req.body
-        try {
-        const newUser = await userQueries.addNewUser(username, avatar_url)
+    const {
+        username,
+        avatar_url
+    } = req.body
+    try {
+        let newUser = await userQueries.addNewUser(username, avatar_url)
         res.json({
             payload: newUser,
             message: 'added user'
         })
-        } catch (error) {
-            res.status(500).json({
-                payload: null,
-                message: 'failed',
-            });
-        }
-    })
+    } catch (error) {
+        res.status(500).json({
+            payload: null,
+            message: 'failed',
+        });
+    }
+})
 
-    module.exports = router;
+module.exports = router;
