@@ -19,10 +19,11 @@ router.get('/', async (req, res) => {
     }
 })
 //get shows by id
-router.get('/:id', async (req, res) => {
-    const id = req.params.id;
+router.get('users/:id', async (req, res) => {
+    const user_id = req.params.user_id;
     try {
-        let show = await showQueries.getShowByid(id)
+        let show = await showQueries.getShowByid(user_id)
+        console.log(show)
         res.json({
             payload: show,
             message: 'retrieved show'
@@ -80,7 +81,7 @@ router.get('/user/:user_id', async (req, res) => {
     const user_id = req.params.user_id;
     try {
         let show = await showQueries.getShowsByUserid(user_id)
-        // console.log(show)
+        console.log(show)
         res.json({
             payload: show,
             message: 'retrieved show'
