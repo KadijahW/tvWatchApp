@@ -56,6 +56,7 @@ INSERT INTO shows (title, img_url, genre_id)
         ('The Simpsons', 'https://image.tmdb.org/t/p/w370_and_h556_bestv2/yTZQkSsxUFJZJe67IenRM0AEklc.jpg', 3);
 
 
+
 -- INSERT SHOW_USERS relationships
 INSERT INTO shows_users(show_id, user_id)
     VALUES
