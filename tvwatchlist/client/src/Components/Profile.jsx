@@ -11,11 +11,11 @@ class Profile extends React.Component {
             // users: this.props,
             userId: "",
             shows: [],
-            id: 0,
-            imgFile: null,
-            imgURL: "",
-            title: "",
-            genre: ""
+            // id: 0,
+            // imgFile: null,
+            // imgURL: "",
+            // title: "",
+            // genre: ""
         }
     }
     componentDidMount() {
