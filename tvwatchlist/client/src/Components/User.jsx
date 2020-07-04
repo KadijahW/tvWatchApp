@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import Profile from './Profile'
+import './CSS/Users.css'
 
 
 class User extends React.Component {
@@ -38,8 +39,8 @@ class User extends React.Component {
                 return (
                     <div className="container">
                         <div className="userInfo">
-                            <Link to={`/users/${user.id}`} onClick={this.handleChange} > <p id="username">{user.username}</p> </Link>
-                            <img id="picture" src={user.avatar_url} key={user.id} alt="profilePicture" />
+                            <Link to={`/users/${user.id}`} onClick={this.handleChange} > <p className="username">{user.username}</p> </Link>
+                            <img className="picture" src={user.avatar_url} key={user.id} alt="profilePicture" />
                         </div>
                     </div>
                 )
