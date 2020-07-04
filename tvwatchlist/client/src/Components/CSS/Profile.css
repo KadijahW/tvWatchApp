@@ -1,0 +1,37 @@
+body{
+    height:100vh
+}
+.userShow{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.showsDiv{
+    margin-top: 2%;
+}
+
+.show{
+border: 2px solid #1B9AAA;
+margin-top: 2%;
+}
+
+.user{
+    border: 2px solid #1B9AAA;
+    width: 20vw;
+    height: 26vh;
+}
+
+.userImage{
+    width: 8vw;
+}
+
+.shows{
+   display: flex;
+   width: 100vw;
+   height: 40vh;
+}
+
+.showCover {
+    width: 35%;
+}
