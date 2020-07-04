@@ -81,7 +81,7 @@ router.get('/user/:user_id', async (req, res) => {
     const user_id = req.params.user_id;
     try {
         let show = await showQueries.getShowsByUserid(user_id)
-        console.log(show)
+        // console.log(show)
         res.json({
             payload: show,
             message: 'retrieved show'

@@ -47,8 +47,13 @@ getShowsByGenreid = async (genre_id) => {
 //get all shows for specific user_id
 getShowsByUserid = async (user_id) => {
     try {
-        let response = await db.any("SELECT * FROM shows INNER JOIN shows_users ON shows.id = shows_users.show_id WHERE user_id = $1", [user_id])
-        console.log(response)
+        let response = await db.any(`SELECT shows.id, title, img_url, genre_id, user_id, username, avatar_url 
+                                   FROM shows 
+                                   JOIN shows_users ON shows.id = shows_users.show_id 
+                                   JOIN users ON shows_users.user_id = users.id 
+                                   WHERE user_id = $1
+                                   GROUP BY shows.id, shows_users.user_id, users.username, users.avatar_url`, [user_id])
+        // console.log(response)
         return response
     } catch (error) {
         console.log("error", error)
