@@ -7,7 +7,7 @@ class Profile extends React.Component {
         super(props)
         this.state = {
             loggedInUser: this.props.match.params.id,
-            users: this.props,
+            // users: this.props,
             userId: "",
             shows: [],
             id: 0,
@@ -32,8 +32,8 @@ class Profile extends React.Component {
     }
 
     render() {
-        const { shows, users } = this.state
-        for (const el of users) {
+        const { shows } = this.state
+        for (const el of shows) {
             console.log(el)
             let name = el.username
             let profile = el.avatar_url
@@ -43,8 +43,6 @@ class Profile extends React.Component {
                         <h1>{name}</h1>
                         <img id="userImage" src={profile} alt="profile" key={name} />
                     </div>
-
-
                     <div id="shows">
                         {shows.map(show => {
                             return (

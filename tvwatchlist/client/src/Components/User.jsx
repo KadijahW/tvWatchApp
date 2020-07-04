@@ -31,14 +31,10 @@ class User extends React.Component {
             username: true
         })
     }
-
-
     render() {
         const { users, username} = this.state;
         if (!username) {
-         
             let userArr = users.map(user => {
-             
                 return (
                     <div className="container">
                         <div className="userInfo">
@@ -52,7 +48,7 @@ class User extends React.Component {
         } else {
             return (
                 <div>
-                    <Profile users={users} username={username}/>
+                    <Profile />
                 </div>
             )
         }
