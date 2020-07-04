@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import './CSS/Profile.css'
 
 class Profile extends React.Component {
     constructor(props) {
@@ -38,19 +39,19 @@ class Profile extends React.Component {
             let name = el.username
             let profile = el.avatar_url
             return (
-                <div id="user">
-                    <div id="user">
+                <div className="userShow">
+                    <div className="user">
                         <h1>{name}</h1>
-                        <img id="userImage" src={profile} alt="profile" key={name} />
+                        <img className="userImage" src={profile} alt="profile" key={name} />
                     </div>
-                    <div id="shows">
+                    <div className="shows">
                         {shows.map(show => {
                             return (
-                                <div className="show">
-                                    <Link id="showTitle" to={"/shows"}><h3>{show.title}</h3></Link>
-                                    <h4 id="showGenre">{show.genre_name}</h4>
-                                    <img id="showCover" key={show.id} src={show.img_url} alt={show.id} />
-                                </div>
+                                    <div className="show">
+                                        <Link className="showTitle" to={"/shows"}><h3>{show.title}</h3></Link>
+                                        <h4 className="showGenre">{show.genre_name}</h4>
+                                        <img className="showCover" key={show.id} src={show.img_url} alt={show.title} />
+                                    </div>
                             )
                         })}
                     </div>
