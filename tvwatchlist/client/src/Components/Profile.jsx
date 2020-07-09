@@ -8,14 +8,8 @@ class Profile extends React.Component {
         super(props)
         this.state = {
             loggedInUser: this.props.match.params.id,
-            // users: this.props,
             userId: "",
             shows: [],
-            // id: 0,
-            // imgFile: null,
-            // imgURL: "",
-            // title: "",
-            // genre: ""
         }
     }
     componentDidMount() {
