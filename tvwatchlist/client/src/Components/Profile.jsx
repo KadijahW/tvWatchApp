@@ -29,7 +29,6 @@ class Profile extends React.Component {
     render() {
         const { shows } = this.state
         for (const el of shows) {
-            console.log(el)
             let name = el.username
             let profile = el.avatar_url
             return (
