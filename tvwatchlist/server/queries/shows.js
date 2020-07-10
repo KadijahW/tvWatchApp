@@ -4,7 +4,7 @@ const db = require('../db/db')
 //get all shows
 getAllshows = async () => {
     try {
-        let response = db.any("SELECT * from shows")
+        let response = db.any("SELECT * FROM shows JOIN genres ON shows.genre_id = genres.id")
         return response
     } catch (error) {
         console.log("error", error)
