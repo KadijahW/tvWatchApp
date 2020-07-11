@@ -6,7 +6,8 @@ class Shows extends React.Component {
     constructor(){
         super()
         this.state = {
-            shows: []
+            shows: [],
+            users: []
         }
     }
 
@@ -24,10 +25,14 @@ class Shows extends React.Component {
         })
     }
 
+    // getUsersWatchingShow = async () => {
+    //     let users = `htttp://localhost:3010/`
+    // }
+
     render(){
         const {shows} = this.state
         return(
-            <div>
+            <div className="showDiv">
                 {shows.map(show => {
                     return (
                         <div className="allShows">
@@ -35,8 +40,12 @@ class Shows extends React.Component {
                             <h4>{show.genre_name}</h4>
                             <img className ="shows_img" key = {show.id} src={show.img_url} alt={show.title}/>
                         </div>
+
                     )
                 })}
+                <div>
+
+                </div>
             </div>
         )
     }
