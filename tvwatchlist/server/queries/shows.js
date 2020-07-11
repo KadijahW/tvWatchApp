@@ -4,7 +4,7 @@ const db = require('../db/db')
 //get all shows
 getAllshows = async () => {
     try {
-        let response = db.any("SELECT * FROM shows JOIN genres ON shows.genre_id = genres.id")
+        let response = db.any("SELECT shows.id, title, img_url, genre_name FROM shows JOIN genres ON shows.genre_id = genres.id")
         return response
     } catch (error) {
         console.log("error", error)
@@ -26,7 +26,7 @@ addNewShow = async (title, img_url, genre_id) => {
     try {
     const insertQuery =`INSERT into shows (title, img_url, genre_id) VALUES($1,$2,$3)`
     let response = await db.none(insertQuery, [title, img_url, genre_id])
-    console.log("help", response)
+    // console.log("help", response)
     return response
     } catch (error) {
         console.log("error", error)
@@ -59,6 +59,9 @@ getShowsByUserid = async (user_id) => {
         console.log("error", error)
     };
 }
+
+//get users watching shows
+
 
 module.exports = {
     getAllshows,
