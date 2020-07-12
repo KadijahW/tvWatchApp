@@ -2,24 +2,17 @@ const db = require('../db/db')
 
 
 
-comments = async () => {
-    try {
-        let response = await db.any(`SELECT * from comments`)
-        return response
-    } catch (error) {
-        console.log("error", error)
-    };
-}
-
 //get all comments for specific show_id
 getAllComments = async (show_id) => {
-    try {
-        let response = await db.any(`SELECT * from comments WHERE show_id = $1`, [show_id])
-        console.log(show_id)
+    try{
+        let response = await db.any(`SELECT comments.id, comment_body, username, show_id FROM comments 
+        JOIN users ON comments.user_id = users.id 
+        WHERE show_id = $1`, [show_id])
+        console.log(response)
         return response
-    } catch (error) {
-        console.log("error", error)
-    };
+    }catch(error){
+        console.log('err', error)
+    }
 }
 
 //post a comment
@@ -36,5 +29,5 @@ addNewComment = async (user_id, comment_body, show_id) => {
 module.exports ={
 getAllComments,
 addNewComment, 
-comments
+// comments
 }
