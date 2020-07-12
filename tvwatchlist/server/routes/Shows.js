@@ -18,11 +18,12 @@ router.get('/', async (req, res) => {
         });
     }
 })
+
 //get shows by id
-router.get('users/:id', async (req, res) => {
-    const user_id = req.params.user_id;
+router.get('/:id', async (req, res) => {
+    const id = req.params.id;
     try {
-        let show = await showQueries.getShowByid(user_id)
+        let show = await showQueries.getShowByid(id)
         console.log(show)
         res.json({
             payload: show,
@@ -45,7 +46,7 @@ router.post('/', async (req, res) => {
     } = req.body
     try {
         let newShow = await showQueries.addNewShow(title, img_url, genre_id)
-        console.log(newShow)
+        // console.log(newShow)
         res.json({
             payload: newShow,
             message: 'added show'
@@ -81,7 +82,6 @@ router.get('/user/:user_id', async (req, res) => {
     const user_id = req.params.user_id;
     try {
         let show = await showQueries.getShowsByUserid(user_id)
-        // console.log(show)
         res.json({
             payload: show,
             message: 'retrieved show'
@@ -93,5 +93,22 @@ router.get('/user/:user_id', async (req, res) => {
         });
     }
 })
+
+//all the users watching a specfic show
+router.get('/users/user', async (req, res) => {
+    try{
+        let shows = await showQueries.getUserWatchingShow()
+        res.json({
+            payload: shows,
+            message: 'retrieved show'
+        })
+    } catch (error) {
+        res.status(500).json({
+            payload: null,
+            message: 'failed retrieving show',
+        });
+    }
+})
+
 
 module.exports = router;

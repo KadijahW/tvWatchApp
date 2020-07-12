@@ -5,6 +5,10 @@ const db = require('../db/db')
 getAllshows = async () => {
     try {
         let response = db.any("SELECT shows.id, title, img_url, genre_name FROM shows JOIN genres ON shows.genre_id = genres.id")
+        // let response = db.any(`SELECT shows.id, title, img_url, genre_name, username FROM shows 
+        // JOIN genres ON shows.genre_id = genres.id 
+        // JOIN shows_users ON shows.id = shows_users.show_id
+        // JOIN users ON shows_users.user_id = users.id`)
         return response
     } catch (error) {
         console.log("error", error)
@@ -47,13 +51,13 @@ getShowsByGenreid = async (genre_id) => {
 //get all shows for specific user_id
 getShowsByUserid = async (user_id) => {
     try {
-        let response = await db.any(`SELECT shows.id, title, img_url, genre_id, user_id, username, avatar_url 
+        let response = await db.any(`SELECT shows.id, title, img_url, genre_name, user_id, username, avatar_url 
                                    FROM shows 
+                                   JOIN genres ON shows.genre_id = genres.id
                                    JOIN shows_users ON shows.id = shows_users.show_id 
                                    JOIN users ON shows_users.user_id = users.id 
                                    WHERE user_id = $1
-                                   GROUP BY shows.id, shows_users.user_id, users.username, users.avatar_url`, [user_id])
-        // console.log(response)
+                                   GROUP BY shows.id, shows_users.user_id, users.username, users.avatar_url, genres.genre_name`, [user_id])
         return response
     } catch (error) {
         console.log("error", error)
@@ -61,12 +65,25 @@ getShowsByUserid = async (user_id) => {
 }
 
 //get users watching shows
-
+getUserWatchingShow = async () => {
+    try{
+        let response = await db.any(`SELECT username, title 
+                                     FROM shows 
+                                     JOIN shows_users 
+                                     ON shows.id = shows_users.show_id 
+                                     JOIN users 
+                                     ON shows_users.user_id = users.id`)
+              return response                          
+        }catch (error) {
+        console.log("error", error)
+    };
+}
 
 module.exports = {
     getAllshows,
     getShowByid,
     getShowsByGenreid,
     getShowsByUserid,
-    addNewShow
+    addNewShow,
+    getUserWatchingShow
 }
