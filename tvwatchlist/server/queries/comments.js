@@ -15,6 +15,7 @@ comments = async () => {
 getAllComments = async (show_id) => {
     try {
         let response = await db.any(`SELECT * from comments WHERE show_id = $1`, [show_id])
+        console.log(show_id)
         return response
     } catch (error) {
         console.log("error", error)

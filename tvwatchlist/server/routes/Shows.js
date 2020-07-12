@@ -24,7 +24,6 @@ router.get('/:id', async (req, res) => {
     const id = req.params.id;
     try {
         let show = await showQueries.getShowByid(id)
-        console.log(show)
         res.json({
             payload: show,
             message: 'retrieved show'

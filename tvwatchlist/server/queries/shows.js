@@ -18,14 +18,19 @@ getAllshows = async () => {
 //get shows by id
 getShowByid = async (id) => {
     try {
-        let response = db.one("SELECT * from shows WHERE id = $1", [id])
+        let response = db.one(`SELECT shows.id,title,img_url, genre_id, genre_name
+        FROM shows 
+        JOIN genres 
+        ON shows.genre_id = genres.id
+        WHERE shows.id = $1
+        `, [id])
         return response
     } catch (error) {
         console.log("error", error)
     };
 }
 
-//post show
+//post show 
 addNewShow = async (title, img_url, genre_id) => {
     try {
     const insertQuery =`INSERT into shows (title, img_url, genre_id) VALUES($1,$2,$3)`
