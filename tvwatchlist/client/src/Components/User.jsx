@@ -6,10 +6,10 @@ import './CSS/Users.css'
 
 
 class User extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            loggedInUser: 1,
+            userId: 1,
             users: [],
             username: false
         }
@@ -19,7 +19,7 @@ class User extends React.Component {
         try {
             let url = "http://localhost:3010/users"
             let res = await axios.get(url)
-            console.log(res.data.payload)
+            // console.log(res.data.payload)
             this.setState({
                 users: res.data.payload
             })
@@ -27,13 +27,16 @@ class User extends React.Component {
             console.log(error)
         }
     }
+
     handleChange = (e) => {
         this.setState({
             username: true
         })
     }
+    
     render() {
-        const { users, username} = this.state;
+        const { users, username, userId } = this.state;
+        
         if (!username) {
             let userArr = users.map(user => {
                 return (
@@ -46,13 +49,7 @@ class User extends React.Component {
                 )
             })
             return userArr
-        } else {
-            return (
-                <div>
-                    <Profile />
-                </div>
-            )
-        }
+        } 
 
     }
 }
