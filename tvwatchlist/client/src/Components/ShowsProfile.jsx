@@ -6,40 +6,63 @@ class ShowsProfile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            id: this.props.match.params.id,
+            show_id: this.props.match.params.show_id,
             show: {},
-            comments:[]
+            comments: [],
+            userId: 1,
+            comment_body: ''
         }
     }
 
     componentDidMount() {
         this.getShow();
-        this.getComments();
     }
 
     getShow = async () => {
-        const { id } = this.state
-        let showURL = `http://localhost:3010/shows/${id}`
+        const { show_id } = this.state
+        let showURL = `http://localhost:3010/shows/${show_id}`
         let res = await axios.get(showURL)
-        console.log(res.data.payload)
         this.setState({
             show: res.data.payload
         })
+        this.getComments();
     }
 
     getComments = async () => {
-        const { id } = this.state
-        console.log(id)
-        let commentURL = `http://localhost:3010/comments/show/${id}`
+        const { show_id } = this.state
+        let commentURL = `http://localhost:3010/comments/show/${show_id}`
         let res = await axios.get(commentURL)
-        console.log(res)
+        console.log(res.data.payload)
         this.setState({
             comments: res.data.payload
         })
     }
 
+    addNewComment = async () => {
+        const { comment_body, userId, show_id } = this.state
+        if(comment_body !== ''){
+            let newComment = `http:localhost:3010/comment/`
+            await axios.post(newComment, {comment_body, userId, show_id})
+        }
+    }
+
+    handleComment= async (e) => {
+        // e.preventDefault()
+        this.setState({
+            comment_body: e.target.value
+        })
+    }
+
     render() {
         const { show, comments } = this.state
+        let commentInfo = comments.map(el => {
+            return(
+                <div className='commentDiv'>
+                    <h5>{el.username}</h5>
+                    <p>{el.comment_body}</p>
+                </div>
+            )
+        })
         return (
             <div>
                 <h4>{show.title}</h4>
@@ -50,7 +73,7 @@ class ShowsProfile extends React.Component {
                     <input name='comments' type='text' placeholder='Add Comment' onChange={this.handleComment}></input>
                     <button>Add</button>
                 </form>
-                
+                {commentInfo}
             </div>
         )
     }
