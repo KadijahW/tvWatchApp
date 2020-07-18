@@ -5,10 +5,6 @@ const db = require('../db/db')
 getAllshows = async () => {
     try {
         let response = db.any("SELECT shows.id, title, img_url, genre_name FROM shows JOIN genres ON shows.genre_id = genres.id")
-        // let response = db.any(`SELECT shows.id, title, img_url, genre_name, username FROM shows 
-        // JOIN genres ON shows.genre_id = genres.id 
-        // JOIN shows_users ON shows.id = shows_users.show_id
-        // JOIN users ON shows_users.user_id = users.id`)
         return response
     } catch (error) {
         console.log("error", error)
@@ -70,18 +66,25 @@ getShowsByUserid = async (user_id) => {
 }
 
 //get users watching shows
-getUserWatchingShow = async () => {
+getUserWatchingShow = async (show_id) => {
     try{
-        let response = await db.any(`SELECT username, title 
-                                     FROM shows 
-                                     JOIN shows_users 
-                                     ON shows.id = shows_users.show_id 
-                                     JOIN users 
-                                     ON shows_users.user_id = users.id`)
+        let response = await db.any(`SELECT username FROM shows_users JOIN users ON shows_users.user_id = users.id WHERE show_id = $1;`, [show_id])
               return response                          
         }catch (error) {
         console.log("error", error)
     };
+}
+
+//add show to users table
+addShowToUser = async (show_id, user_id) => {
+    try{
+        let insertQuery = `INSERT INTO shows_users(user_id, show_id) VALUES($1, $2)`
+        let response = await db.none(insertQuery, [user_id, show_id])
+        return response
+    }
+catch(error){
+    console.log('err', error)
+}
 }
 
 module.exports = {
@@ -90,5 +93,6 @@ module.exports = {
     getShowsByGenreid,
     getShowsByUserid,
     addNewShow,
-    getUserWatchingShow
+    getUserWatchingShow,
+    addShowToUser
 }
