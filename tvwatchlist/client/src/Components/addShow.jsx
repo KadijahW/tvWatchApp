@@ -1,17 +1,19 @@
 import React from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 
 class addShow extends React.Component {
-    constructor(props) {
-        super(props)
+    constructor() {
+        super()
         this.state = {
-            loggedInUser: this.props.match.params.id,
+            user_id: 4,
             genres: [],
             shows: [],
             img_url: '',
             title: '',
-            genre_id: 0
+            genre_id: 0,
+            show_id: 0
         }
     }
     componentDidMount() {
@@ -37,22 +39,26 @@ class addShow extends React.Component {
         })
     }
 
+
     addNewShow = async (e) => {
-        e.preventDefault()
-        const { img_url, title, genre_id } = this.state
-            if (img_url !== '' && title !== '' && genre_id !== 0) {
-                let newShow = `http://localhost:3010/shows`
-                 await axios.post(newShow, {img_url, title, genre_id})
-            }
-        this.resetForm()
+        const { img_url, title, genre_id, userId } = this.state
+        if (img_url !== '' && title !== '' && genre_id !== 0) {
+            let newShow = `http://localhost:3010/shows`
+            await axios.post(newShow, { userId, img_url, title, genre_id })
+        }
     }
 
-    resetForm = () => {
-        this.setState({
-            img_url: '',
-            title: '',
-            genre_id: 0
-        })
+    addToWatching = async (e) => {
+        e.preventDefault()
+        const {user_id, show_id } = this.state
+        const newToUserList = {
+            user_id,
+            show_id,
+        }
+        if(show_id !== 0){
+            let addShow = `http://localhost:3010/shows/user/${show_id}`
+            await axios.post(addShow, newToUserList)
+        }
     }
 
     handleImageURL = async (e) => {
@@ -72,12 +78,18 @@ class addShow extends React.Component {
         })
     }
 
+    handleShow = async (e) => {
+        this.setState({
+            show_id: e.target.value
+        })
+    }
+
     render() {
-        const { shows, genres } = this.state
+        const { shows, genres} = this.state
         return (
             <div>
                 <h1>Add Show</h1>
-                <form className='startWatching' onSubmit={this.handleSubmit}>
+                <form className='startWatching' onSubmit={this.addToWatching}>
                     <h3>Start Watching Show</h3>
                     <div>
                         <select onChange={this.handleShow}>
@@ -89,7 +101,6 @@ class addShow extends React.Component {
                             })}
                         </select>
                         <br></br>
-
                         <button>Start Watching</button>
                     </div>
                 </form>
@@ -98,11 +109,11 @@ class addShow extends React.Component {
                 <form className='addShow' onSubmit={this.addNewShow}>
                     <label htmlFor='img_url'>Show Image URL</label>
                     <br></br>
-                    <input name='img_url' type='text' placeholder='url' onChange={this.handleImageURL}></input>
+                    <input value={this.img_url} name='img_url' type='text' placeholder='url' onChange={this.handleImageURL}></input>
                     <br></br>
                     <label htmlFor='title'>title</label>
                     <br></br>
-                    <input name='title' type='text' placeholder='name' onChange={this.handleTitle}></input>
+                    <input value={this.title}  name='title' type='text' placeholder='name' onChange={this.handleTitle}></input>
                     <br></br>
                     <select onChange={this.handleGenre}>
                         <option>---Select Genre---</option>
