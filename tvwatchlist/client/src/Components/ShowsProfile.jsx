@@ -6,22 +6,36 @@ class ShowsProfile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            user_id: 4,
             show_id: this.props.match.params.show_id,
             show: {},
             comments: [],
-            userId: 1,
-            comment_body: ''
+            comment_body: '',
+            watchers: []
         }
     }
 
     componentDidMount() {
         this.getShow();
+        this.getUsersWatchingShow();
+    }
+
+    getUsersWatchingShow = async () => {
+        const {show_id} = this.state
+        let users = `http://localhost:3010/shows/watchers/${show_id}`
+        let res = await axios.get(users)
+        // console.log(res.data.payload)
+
+        this.setState({
+            watchers: res.data.payload
+        })
     }
 
     getShow = async () => {
         const { show_id } = this.state
         let showURL = `http://localhost:3010/shows/${show_id}`
         let res = await axios.get(showURL)
+        // console.log(res.data.payload)
         this.setState({
             show: res.data.payload
         })
@@ -32,29 +46,43 @@ class ShowsProfile extends React.Component {
         const { show_id } = this.state
         let commentURL = `http://localhost:3010/comments/show/${show_id}`
         let res = await axios.get(commentURL)
-        console.log(res.data.payload)
+        // console.log(res.data.payload)
         this.setState({
             comments: res.data.payload
         })
     }
 
     addNewComment = async () => {
-        const { comment_body, userId, show_id } = this.state
+        const { comment_body, show_id, user_id } = this.state
+        let comment = {
+            comment_body, 
+            user_id, 
+            show_id
+        }
         if(comment_body !== ''){
-            let newComment = `http:localhost:3010/comment/`
-            await axios.post(newComment, {comment_body, userId, show_id})
+            let newComment = `http://localhost:3010/comments/`
+            let res = await axios.post(newComment, comment)
+            this.postComment(res.data.payload)
         }
     }
 
+    postComment = async (comment) => {
+        const{comments} = this.state
+        let commentCopy = [...comments]
+        commentCopy.push(comment)
+        this.setState ({
+            comments: commentCopy
+        })
+    }
+
     handleComment= async (e) => {
-        // e.preventDefault()
         this.setState({
             comment_body: e.target.value
         })
     }
 
     render() {
-        const { show, comments } = this.state
+        const { show, comments, watchers } = this.state
         let commentInfo = comments.map(el => {
             return(
                 <div className='commentDiv'>
@@ -63,19 +91,33 @@ class ShowsProfile extends React.Component {
                 </div>
             )
         })
-        return (
+
+  const userWatching =  watchers.map(el => {
+            return(
+                    JSON.parse(JSON.stringify(el.username))
+            )
+        })
+        const displayUsers = userWatching.join(', ')
+
+      return (
             <div>
+                <div className='showInfo'>
                 <h4>{show.title}</h4>
-                <img src={show.img_url} key={show.id} alt={show.title} />
+                <img src={show.img_url} key={show.title} alt={show.title} />
                 <h5>{show.genre_name}</h5>
-                <p> Watched By:</p>
-                <form className='addComment' onSubmit={this.addNewComment}>
-                    <input name='comments' type='text' placeholder='Add Comment' onChange={this.handleComment}></input>
-                    <button>Add</button>
+                </div>
+                
+                <div>
+                <span>Watched By:  </span> {displayUsers}
+                </div>
+
+                <form onSubmit={this.addNewComment}>
+                <input type='text' placeholder='Add Comment' onChange={this.handleComment}></input> 
+                <button>Add</button>
                 </form>
                 {commentInfo}
             </div>
-        )
+      )
     }
 }
 
