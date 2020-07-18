@@ -9,7 +9,7 @@ class User extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            userId: 1,
+            user_id: 4,
             users: [],
             username: false
         }
@@ -35,7 +35,7 @@ class User extends React.Component {
     }
     
     render() {
-        const { users, username, userId } = this.state;
+        const { users, username, user_id } = this.state;
         
         if (!username) {
             let userArr = users.map(user => {
