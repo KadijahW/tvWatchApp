@@ -18,10 +18,22 @@ getAllComments = async (show_id) => {
 //post a comment
 addNewComment = async (user_id, comment_body, show_id) => {
     try {
-    const insertQuery = `INSERT into comments(user_id, comment_body, show_id) VALUES($1,$2, $3)`
-    let response = await db.none(insertQuery,[user_id, comment_body, show_id])
+    const insertQuery = `INSERT into comments(user_id, comment_body, show_id) VALUES($1,$2, $3) RETURNING *`
+    let response = await db.one(insertQuery,[user_id, comment_body, show_id])
+
     return response
     } catch (error) {
+        console.log("error", error)
+    };
+}
+
+//get comment by id
+getCommentById = async (id) => {
+    try{
+        let response = await db.one(`SELECT comments.id, comment_body, username FROM comments JOIN users ON comments.user_id = users.id
+                        WHERE comments.id = $1`, [id])
+            return response
+    }catch(error){
         console.log("error", error)
     };
 }
@@ -29,5 +41,5 @@ addNewComment = async (user_id, comment_body, show_id) => {
 module.exports ={
 getAllComments,
 addNewComment, 
-// comments
+getCommentById
 }
