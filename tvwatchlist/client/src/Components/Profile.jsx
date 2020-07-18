@@ -7,8 +7,10 @@ class Profile extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            user_id: this.props.match.params.user_id,
+            user_id: this.props.match.params.id,
             shows: [],
+            username: '',
+            avatar_url: ''
         }
     }
     componentDidMount() {
@@ -17,42 +19,44 @@ class Profile extends React.Component {
 
     getUserShows = async () => {
         const {user_id} = this.state
+        console.log(user_id)
         let userURL = `http://localhost:3010/shows/user/${user_id}`
         let res = await axios.get(userURL)
-        // console.log(res.data.payload)
+        console.log(res.data.payload[0])
         this.setState({
-            shows: res.data.payload
+            shows: res.data.payload,
+            username: res.data.payload[0].username,
+            avatar_url: res.data.payload[0].avatar_url
         })
     }
 
     render() {
-        const { shows } = this.state
-        for (const el of shows) {
-            let name = el.username
-            let profile = el.avatar_url
+
+        const { shows, username, avatar_url } = this.state
+
+        let usersShows = shows.map(show => {
+            return (
+                    <div className="show">
+                        <Link className="showTitle" to={`/shows/${show.id}`}><h3>{show.title}</h3></Link>
+                        <h4 className="showGenre">{show.genre_name}</h4>
+                        <img className="showCover" key={show.id} src={show.img_url} alt={show.title} />
+                    </div>
+            )
+        })
+       
             return (
                 <div className="userShow">
                     <div className="user">
-                        <h1>{name}</h1>
-                        <img className="userImage" src={profile} alt="profile" key={name} />
+                        <h1>{username}</h1> 
+                        <img className="userImage" src={avatar_url} alt="profile" key={avatar_url} />
                     </div>
                     <div className="shows">
-                        {shows.map(show => {
-                            return (
-                                    <div className="show">
-                                        <Link className="showTitle" to={`/shows/${show.id}`}><h3>{show.title}</h3></Link>
-                                        <h4 className="showGenre">{show.genre_name}</h4>
-                                        <img className="showCover" key={show.id} src={show.img_url} alt={show.title} />
-                                    </div>
-                            )
-                        })}
+                   {usersShows}
                     </div>
 
                 </div>
             )
         }
-        return (<> </>)
-    }
 }
 
 
