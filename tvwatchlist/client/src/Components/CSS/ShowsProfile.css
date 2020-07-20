@@ -1,0 +1,32 @@
+.showComments{
+    border: 2px solid black;
+}
+
+.showImg{
+    width: 25vw;
+}
+
+.commentDiv{
+    border: 2px solid #1B9AAA;
+    width: 25vw;
+    margin-left: 35%;
+}
+
+.watchers{
+    font-weight: bold;
+    font-size: larger;
+}
+
+.commentInput{
+    width: 30%;
+    padding: 12px 20px;
+    margin-top: 2%;
+    margin-left: 4%;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    outline: none;
+}
+
+button{
+    margin: 1%
+}

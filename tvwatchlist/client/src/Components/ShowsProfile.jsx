@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import './CSS/ShowsProfile.css'
 
 
 class ShowsProfile extends React.Component {
@@ -103,19 +104,21 @@ class ShowsProfile extends React.Component {
             <div>
                 <div className='showInfo'>
                 <h4>{show.title}</h4>
-                <img src={show.img_url} key={show.title} alt={show.title} />
+                <img className='showImg' src={show.img_url} key={show.title} alt={show.title} />
                 <h5>{show.genre_name}</h5>
                 </div>
                 
-                <div>
+                <div className="watchers">
                 <span>Watched By:  </span> {displayUsers}
                 </div>
-
-                <form onSubmit={this.addNewComment}>
-                <input type='text' placeholder='Add Comment' onChange={this.handleComment}></input> 
+    
+                <form className='showComments' onSubmit={this.addNewComment}>
+                <input className='commentInput' type='text' placeholder='Add Comment' onChange={this.handleComment}></input> 
                 <button>Add</button>
-                </form>
+                <ul className='userComment'>
                 {commentInfo}
+                </ul>
+                </form>
             </div>
       )
     }
