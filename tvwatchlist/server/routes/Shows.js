@@ -77,7 +77,7 @@ router.get('/genre/:genre_id', async (req, res) => {
 })
 
 // add show to user
-router.post('/user/:show_id', async(req, res)=> {
+router.post('/watchers/:show_id', async(req, res)=> {
     const {show_id, user_id} = req.body
 try{
     let show = await showQueries.addShowToUser(show_id, user_id)

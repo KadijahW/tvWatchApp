@@ -8,7 +8,7 @@ getAllComments = async (show_id) => {
         let response = await db.any(`SELECT comments.id, comment_body, username, show_id FROM comments 
         JOIN users ON comments.user_id = users.id 
         WHERE show_id = $1`, [show_id])
-        console.log(response)
+        // console.log(response)
         return response
     }catch(error){
         console.log('err', error)
